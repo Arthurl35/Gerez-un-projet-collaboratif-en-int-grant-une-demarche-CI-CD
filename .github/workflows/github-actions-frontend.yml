@@ -1,9 +1,16 @@
 name: Frontend Tests and Coverage 🚀
+
 on: [push, pull_request]
+
 jobs:
   frontend-tests:
     name: Run Frontend Tests and Generate Coverage Report
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: front
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
