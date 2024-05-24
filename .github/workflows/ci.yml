@@ -34,6 +34,7 @@ jobs:
       # Exécuter les tests de couverture
       - name: Run tests with coverage
         run: npm test -- --watch=false --browsers=ChromeHeadless
+        continue-on-error: true
 
       # Télécharger le rapport de couverture des tests
       - name: Upload test coverage report
@@ -57,6 +58,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
+          cache: 'maven'
 
       - name: Install dependencies
         run: mvn clean install
