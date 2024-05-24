@@ -1,0 +1,43 @@
+name: Integration Continue
+
+# Décrire les événements qui déclenchent le workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Organiser les étapes du workflow (Exécution en parallèle)
+jobs:
+  frontend-test:
+    runs-on: ubuntu-latest # Renseigner l'environnement d'exécution
+    defaults:
+      run:
+        working-directory: front # Lancer le job dans le répertoire front
+
+    steps: # Lister les étapes pour tester notre job
+      # Récupérer le code source de notre répertoire avec les actions de GitHub Actions
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Installer les dépendances
+      - name: Install dependencies
+        run: npm install
+
+      # Exécuter les tests de couverture
+      - name: Run tests with coverage
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+
+      # Télécharger le rapport de couverture des tests
+      - name: Upload test coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: karma-report
+          path: front/coverage/bobapp
