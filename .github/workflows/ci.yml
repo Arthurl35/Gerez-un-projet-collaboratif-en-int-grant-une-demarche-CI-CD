@@ -128,21 +128,23 @@ jobs:
           name: bobapp-back-coverage
           path: back/target/site/jacoco
 
-      # Construire et analyser avec SonarCloud
-      - name: Build and analyze with SonarCloud
+      # Construire et analyser avec SonarCloud (Back)
+      - name: Build and analyze with SonarCloud (Back)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: | # Exécuter plusieurs commandes dans un seul bloc
           cd back
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD \
-            -Dsonar.sources=src/main \
-            -Dsonar.tests=src/test \
-            -Dsonar.javascript.lcov.reportPaths=../front/coverage/bobapp/lcov.info \
-            -Dsonar.java.binaries=target/classes \
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+          sonar-scanner
 
+      # Construire et analyser avec SonarCloud (Front)
+      - name: Build and analyze with SonarCloud (Front)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: | # Exécuter plusieurs commandes dans un seul bloc
+          cd front
+          sonar-scanner
 
   docker-deploy:
     # Définir le job pour la construction et le déploiement des images Docker
