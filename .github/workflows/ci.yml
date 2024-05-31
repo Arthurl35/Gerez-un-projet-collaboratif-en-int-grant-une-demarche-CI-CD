@@ -134,11 +134,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: | # Exécuter plusieurs commandes dans un seul bloc
+          cd back
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD \
             -Dsonar.sources=src/main \
             -Dsonar.tests=src/test \
-            -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov.info \
+            -Dsonar.javascript.lcov.reportPaths=../front/coverage/bobapp/lcov.info \
             -Dsonar.java.binaries=target/classes \
-            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
-
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
