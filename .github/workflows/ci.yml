@@ -140,7 +140,7 @@ jobs:
       - name: Build and analyze backend with SonarCloud
         working-directory: back
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
@@ -149,7 +149,7 @@ jobs:
       - name: Analyze frontend with SonarCloud
         working-directory: front
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           sonar-scanner -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_front
