@@ -33,26 +33,27 @@ jobs:
 
       # Exécuter les tests de couverture
       - name: Run tests with coverage
-        run: npm test -- --watch=false --browsers=ChromeHeadless --code-coverage
-        continue-on-error: true #? warning
+        run: npm test -- --watch=false --browsers=ChromeHeadless
 
       # Télécharger le rapport de couverture des tests
       - name: Upload test coverage report
         uses: actions/upload-artifact@v4
         with:
           name: bobapp-front-coverage
-          path: coverage/bobapp
+          path: front/coverage/bobapp
 
   backend-test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: back
+        working-directory: back # Lancer le job dans le répertoire back
 
     steps:
+      # Récupérer le code source de notre répertoire avec les actions de GitHub Actions
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Configurer Java
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
@@ -60,33 +61,35 @@ jobs:
           java-version: '11'
           cache: 'maven'
 
+      # Installer les dépendances
       - name: Install dependencies
         run: mvn clean install
 
+      # Exécuter les tests
       - name: Run tests
         run: mvn test
 
+      # Générer le rapport de couverture
       - name: Generate coverage report
         run: mvn jacoco:report
 
+      # Télécharger le rapport de couverture des tests
       - name: Upload test coverage report
         uses: actions/upload-artifact@v4
         with:
           name: bobapp-back-coverage
-          path: target/site/jacoco
+          path: back/target/site/jacoco
 
   sonarcloud:
     # Définir le job pour l'analyse SonarCloud
     name: Analyse avec SonarCloud
     runs-on: ubuntu-latest
-    needs: [ frontend-test, backend-test ]  # Attendre que les jobs frontend et backend soient terminés avec succès
+    needs: [ frontend-test, backend-test ]  # Attend que les jobs frontend et backend soient terminés avec succès
 
     steps:
       # Récupérer le code source de notre répertoire avec les actions de GitHub Actions
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Désactiver les clones superficiels pour une meilleure pertinence de l'analyse
 
       # Configurer JDK 17
       - name: Set up JDK 17
@@ -128,15 +131,14 @@ jobs:
       # Construire et analyser avec SonarCloud
       - name: Build and analyze with SonarCloud
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Nécessaire pour obtenir les informations sur la PR, si disponible
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
+        run: | # Exécuter plusieurs commandes dans un seul bloc
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD \
-            -Dsonar.projectName="project_10" \
-            -Dsonar.sources=src \
-            -Dsonar.tests=src \
-            -Dsonar.test.inclusions=**/*.spec.ts \
-            -Dsonar.typescript.lcov.reportPaths=front/coverage/bobapp/lcov.info \
-            -Dsonar.java.binaries=back/target/classes \
+            -Dsonar.sources=src/main \
+            -Dsonar.tests=src/test \
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov.info \
+            -Dsonar.java.binaries=target/classes \
             -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
+
