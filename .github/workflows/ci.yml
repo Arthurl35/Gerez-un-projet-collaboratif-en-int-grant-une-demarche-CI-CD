@@ -124,7 +124,9 @@ jobs:
             -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_front
             -Dsonar.organization=arthurl35
             -Dsonar.sources=src
+            -Dsonar.exclusions=src/polyfills.ts
             -Dsonar.tests=src
+            -Dsonar.test.inclusions=src/**/*.spec.ts,src/test/**,src/**/*Test.java
             -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info
             -Dsonar.sourceEncoding=UTF-8
         env:
@@ -177,11 +179,13 @@ jobs:
             -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_back \
             -Dsonar.organization=arthurl35 \
             -Dsonar.sources=src/main \
+            -Dsonar.exclusions=src/main/resources/static/** \
             -Dsonar.tests=src/test \
             -Dsonar.javascript.lcov.reportPaths=../front/coverage/bobapp/lcov.info \
             -Dsonar.java.binaries=target/classes \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
             -Dsonar.sourceEncoding=UTF-8
+  
   
 
   docker-deploy:
