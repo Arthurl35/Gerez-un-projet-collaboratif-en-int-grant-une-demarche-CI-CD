@@ -129,6 +129,8 @@ jobs:
             -Dsonar.test.inclusions=src/**/*.spec.ts,src/test/**,src/**/*Test.java
             -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info
             -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.branch.name=main  # Ajout de la branche
+            -X
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -184,9 +186,12 @@ jobs:
             -Dsonar.javascript.lcov.reportPaths=../front/coverage/bobapp/lcov.info \
             -Dsonar.java.binaries=target/classes \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
-            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.branch.name=main
+            -X
   
-  
+
+
 
   docker-deploy:
     # Définir le job pour la construction et le déploiement des images Docker
