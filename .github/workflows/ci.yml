@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+    types: [opened, synchronize, reopened]
 
 # Organiser les étapes du workflow (Exécution en parallèle)
 jobs:
