@@ -81,7 +81,7 @@ jobs:
           path: back/target/site/jacoco
 
   frontend-SonarCloud:
-    name: frontend - Analyse avec SonarCloud
+    name: Analyse avec SonarCloud
     runs-on: ubuntu-latest
     needs: [ frontend-test ]
 
@@ -116,15 +116,22 @@ jobs:
           cd front
           npm install
 
+      - name: Install SonarQube Scanner
+        run: |
+          curl -sSLo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip /tmp/sonar-scanner-cli.zip -d /tmp
+          mv /tmp/sonar-scanner-4.6.2.2472-linux /tmp/sonar-scanner
+          export PATH=$PATH:/tmp/sonar-scanner/bin
+
       - name: Run SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           cd front
-          npm run sonar
-
-
+          sonar-scanner -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_front -Dsonar.organization=arthurl35 -Dsonar.sources=src -Dsonar.tests=src -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info -Dsonar.sourceEncoding=UTF-8
+  
+  
 
   backend-SonarCloud:
     name: backend - Analyse avec SonarCloud
@@ -164,6 +171,7 @@ jobs:
         run: |
           cd back
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_back -Dsonar.organization=arthurl35
+
 
 
 
