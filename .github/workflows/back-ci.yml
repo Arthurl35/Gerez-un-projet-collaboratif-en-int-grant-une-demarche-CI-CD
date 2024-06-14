@@ -82,7 +82,6 @@ jobs:
 
       - name: Build project
         run: |
-          cd back
           mvn clean install
 
       - name: SonarCloud Scan
@@ -90,13 +89,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd back
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
   docker-build-push:
     name: Build and Push Docker Image for Backend
     runs-on: ubuntu-latest
-    needs: [ backend-test ]
+    needs: [ backend-SonarCloud ]
 
     steps:
       - name: Checkout code
