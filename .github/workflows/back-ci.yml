@@ -111,3 +111,4 @@ jobs:
           file: ./back/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/bobapp-backend:latest
+

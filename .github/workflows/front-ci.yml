@@ -76,14 +76,22 @@ jobs:
           restore-keys: ${{ runner.os }}-npm
 
       - name: Install dependencies
-        run: |
-          cd front
-          npm install
+        run: npm install
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: front
+          args: >
+            -Dsonar.projectKey=Arthurl35_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD_front
+            -Dsonar.organization=arthurl35
+            -Dsonar.sources=src
+            -Dsonar.exclusions=src/polyfills.ts
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=src/**/*.spec.ts,src/test/**,src/**/*Test.java
+            -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.branch.name=main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -91,7 +99,7 @@ jobs:
   docker-build-push:
     name: Build and Push Docker Image for Frontend
     runs-on: ubuntu-latest
-    needs: [ frontend-test ]
+    needs: [ frontend-SonarCloud ]
 
     steps:
       - name: Checkout code
