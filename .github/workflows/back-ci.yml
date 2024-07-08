@@ -16,7 +16,7 @@ on:
 
 jobs:
   backend-test:
-    runs-on: ubuntu-latest # Renseigner l'environnement d'exécution
+    runs-on: ubuntu-latest # Environnement d'exécution
     defaults:
       run:
         working-directory: back # Lancer le job dans le répertoire back
