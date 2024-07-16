@@ -118,4 +118,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/bobapp-frontend:latest
             ${{ secrets.DOCKER_USERNAME }}/bobapp-frontend:${{ github.sha }}
-            ${{ secrets.DOCKER_USERNAME }}/bobapp-frontend:$(date +'%Y%m%d%H%M%S')
