@@ -116,5 +116,4 @@ jobs:
           file: ./front/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bobapp-frontend:latest
             ${{ secrets.DOCKER_USERNAME }}/bobapp-frontend:${{ github.sha }}
